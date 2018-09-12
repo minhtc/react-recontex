@@ -2,6 +2,8 @@
 
 A lightweight state management using React Context API, inspired by Redux
 
+Super simple and easy to approach react (react-native) application
+
 ## Installation
 
     npm install --save react-recontex
@@ -15,9 +17,9 @@ A lightweight state management using React Context API, inspired by Redux
         const initialState = {
             todos: [
                 {
-                id: 1,
-                content: "Drink water",
-                completed: true
+                    id: 1,
+                    content: "Drink water",
+                    completed: true
                 },
             ]
         };
@@ -65,7 +67,7 @@ A lightweight state management using React Context API, inspired by Redux
             </Provider>
         );
 
-3)  Connect component to get data and call action
+3)  Connect component to get data and call action anywhere you want
 
         import React from "react";
         import Todo from "./Todo";
@@ -74,11 +76,11 @@ A lightweight state management using React Context API, inspired by Redux
         const TodoList = ({ todos }) => (
             <ul>
                 {todos.map(todo => (
-                <Todo
-                    key={todo.id}
-                    todo={todo}
-                    onClick={() => actions.toggleItem(todo.id)}
-                />
+                    <Todo
+                        key={todo.id}
+                        todo={todo}
+                        onClick={() => actions.toggleItem(todo.id)}
+                    />
                 ))}
             </ul>
         );
