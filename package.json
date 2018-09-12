@@ -1,9 +1,14 @@
 {
   "name": "react-recontext",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight state management using React Context API, inspired by Redux",
-  "main": "index.js",
+  "main": "dist/react-context.js",
   "scripts": {
+    "build:umd": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c -o dist/react-context.js",
+    "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c -o dist/react-recontex.min.js",
+    "build": "npm run build:umd && npm run build:umd:min",
+    "prepublish": "npm run build",
+    "npm:publish": "npm run prepublish && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": {
@@ -22,7 +27,18 @@
     "lightweight",
     "flux"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "react": "^16.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.1",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "cross-env": "^5.2.0",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^5.0.2"
   }
 }

@@ -89,4 +89,4 @@ A lightweight state management using React Context API, inspired by Redux
 
         export default connect(mapStateToProps)(TodoList);
 
-More detail in example folder
+More detail in example(https://github.com/minhtc/react-recontex/tree/master/examples/todos) folder

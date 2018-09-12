@@ -5,8 +5,8 @@
   "dependencies": {
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-scripts": "1.1.5",
-    "react-recontex": "file:../../"
+    "react-recontext": "file:../../",
+    "react-scripts": "1.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
