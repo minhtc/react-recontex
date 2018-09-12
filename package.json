@@ -1,0 +1,28 @@
+{
+  "name": "react-recontext",
+  "version": "1.0.0",
+  "description": "A lightweight state management using React Context API, inspired by Redux",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Minh Tran",
+    "url": "https://github.com/minhtc"
+  },
+  "license": "ISC",
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-native",
+    "redux",
+    "context",
+    "react-context",
+    "state",
+    "lightweight",
+    "flux"
+  ],
+  "dependencies": {
+    "react": "^16.5.0"
+  }
+}

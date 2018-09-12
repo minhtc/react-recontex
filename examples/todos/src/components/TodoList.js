@@ -1,0 +1,21 @@
+import React from "react";
+import Todo from "./Todo";
+import { connect, actions } from "../recontex/store";
+
+const TodoList = ({ todos }) => (
+  <ul>
+    {todos.map(todo => (
+      <Todo
+        key={todo.id}
+        todo={todo}
+        onClick={() => actions.toggleItem(todo.id)}
+      />
+    ))}
+  </ul>
+);
+
+const mapStateToProps = state => ({
+  todos: state.todos
+});
+
+export default connect(mapStateToProps)(TodoList);
