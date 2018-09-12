@@ -6,13 +6,13 @@ Super simple and easy to approach react (react-native) application
 
 ## Installation
 
-    npm install --save react-recontex
+    npm install --save react-recontext
 
 ## Usage
 
 1.  Create store.js
 
-        import createStore from "react-recontex";
+        import createStore from "react-recontext";
 
         const initialState = {
             todos: [
@@ -91,4 +91,4 @@ Super simple and easy to approach react (react-native) application
 
         export default connect(mapStateToProps)(TodoList);
 
-More detail in example(https://github.com/minhtc/react-recontex/tree/master/examples/todos) folder
+More detail in [example](github.com/minhtc/react-recontext/tree/master/examples/todos) folder
