@@ -1,5 +1,5 @@
 import React from 'react'
-import { actions } from '../recontex/store'
+import { actions } from '../recontext/store'
 
 const AddTodo = () => {
   let input

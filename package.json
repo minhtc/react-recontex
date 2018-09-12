@@ -1,11 +1,11 @@
 {
   "name": "react-recontext",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A lightweight state management using React Context API, inspired by Redux",
   "main": "dist/react-context.js",
   "scripts": {
     "build:umd": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c -o dist/react-context.js",
-    "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c -o dist/react-recontex.min.js",
+    "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c -o dist/react-recontext.min.js",
     "build": "npm run build:umd && npm run build:umd:min",
     "prepublish": "npm run build",
     "npm:publish": "npm run prepublish && npm publish",

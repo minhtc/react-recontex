@@ -10,7 +10,7 @@ const config = {
   external: ["react"],
   output: {
     format: "umd",
-    name: "react-recontex",
+    name: "react-recontext",
     globals: {
       react: "React"
     }

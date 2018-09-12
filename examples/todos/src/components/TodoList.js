@@ -1,6 +1,6 @@
 import React from "react";
 import Todo from "./Todo";
-import { connect, actions } from "../recontex/store";
+import { connect, actions } from "../recontext/store";
 
 const TodoList = ({ todos }) => (
   <ul>

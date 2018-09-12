@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('react')) :
   typeof define === 'function' && define.amd ? define(['react'], factory) :
-  (global['react-recontex'] = factory(global.React));
+  (global['react-recontext'] = factory(global.React));
 }(this, (function (React) { 'use strict';
 
   React = React && React.hasOwnProperty('default') ? React['default'] : React;
