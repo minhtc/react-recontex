@@ -26,8 +26,9 @@ jobs:
             - v1-dependencies-master
 
       - run: npm install
-      - deploy: command: |
-                  npm run publish
+      - deploy:
+          command: |
+            npm run publish
 
       - save_cache:
           paths:
