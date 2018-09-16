@@ -2,9 +2,9 @@
 
 [![npm version](https://badge.fury.io/js/react-recontext.svg)](https://badge.fury.io/js/react-recontext) [![CircleCI](https://circleci.com/gh/minhtc/react-recontext/tree/master.svg?style=svg)](https://circleci.com/gh/minhtc/react-recontext/tree/master) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/minhtc/react-recontext/graphs/contributors)
 
-A lightweight state management using React Context API, inspired by Redux
+A lightweight state management using React Context API, inspired by Flux, Redux
 
-Super simple and easy to approach react (react-native) application
+SUPER simple and easy to approach react (react-native) application
 
 Screenshots:
 
@@ -15,6 +15,8 @@ Screenshots:
     npm install --save react-recontext
 
 ## Usage
+
+Included examples you can play with: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/todos)
 
 1.  Create store.js
 
@@ -31,11 +33,11 @@ Screenshots:
         };
 
         const actionsCreators = {
-            toggleItem: (state, todoId) => ({
+            toggleItem: (state, { todoId }) => ({
                 todos: state.todos.map(
-                todo =>
-                    todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
-                )
+                    todo =>
+                        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+                    )
             })
         };
 
@@ -86,7 +88,7 @@ Screenshots:
                     <Todo
                         key={todo.id}
                         todo={todo}
-                        onClick={() => actions.toggleItem(todo.id)}
+                        onClick={() => actions.toggleItem({ todoId: todo.id })}
                     />
                 ))}
             </ul>
@@ -97,5 +99,3 @@ Screenshots:
         });
 
         export default connect(mapStateToProps)(TodoList);
-
-More detail in [example](https://github.com/minhtc/react-recontext/tree/master/examples/todos) folder
