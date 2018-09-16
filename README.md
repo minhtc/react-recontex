@@ -7,6 +7,7 @@ A lightweight state management using React Context API, inspired by Redux
 Super simple and easy to approach react (react-native) application
 
 Screenshots:
+
 ![Logger Example](https://github.com/minhtc/react-recontext/raw/master/screenshots/logger.gif "Logger Example")
 
 ## Installation
