@@ -131,20 +131,20 @@
     return (
       /*#__PURE__*/
       function (_React$PureComponent) {
-        _inherits(StoreProvider, _React$PureComponent);
+        _inherits(RootProvider, _React$PureComponent);
 
-        function StoreProvider(props) {
+        function RootProvider(props) {
           var _this;
 
-          _classCallCheck(this, StoreProvider);
+          _classCallCheck(this, RootProvider);
 
-          _this = _possibleConstructorReturn(this, _getPrototypeOf(StoreProvider).call(this, props));
+          _this = _possibleConstructorReturn(this, _getPrototypeOf(RootProvider).call(this, props));
           _this.state = initialState;
           setProvider(_assertThisInitialized(_assertThisInitialized(_this)));
           return _this;
         }
 
-        _createClass(StoreProvider, [{
+        _createClass(RootProvider, [{
           key: "render",
           value: function render() {
             return React.createElement(Provider, {
@@ -153,10 +153,11 @@
           }
         }]);
 
-        return StoreProvider;
+        return RootProvider;
       }(React.PureComponent)
     );
-  };
+  }; // inject root state into component
+
 
   var createConnect = function createConnect(Consumer) {
     return function (mapStateToProps) {
@@ -173,28 +174,39 @@
         return ConnectedComponent;
       };
     };
-  };
+  }; // create store
 
-  var index = (function () {
-    var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  var index = (function (initialState) {
     var actionsCreators = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var logger = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     var context = React.createContext();
-    var provider = null;
-    var state = initialState;
 
     var setProvider = function setProvider(self) {
       return provider = self;
     };
 
+    var provider = null;
+    var state = initialState;
     var actions = Object.keys(actionsCreators).reduce(function (accumulator, currentAction) {
       return _objectSpread({}, accumulator, _defineProperty({}, currentAction, function () {
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
 
-        var changes = actionsCreators[currentAction].apply(actionsCreators, [state].concat(args));
-        state = _objectSpread({}, state, changes);
-        provider.setState(state);
+        var update = actionsCreators[currentAction].apply(actionsCreators, [state].concat(args));
+
+        var nextState = _objectSpread({}, state, update);
+
+        if (logger) {
+          console.log("---> ACTION: %c" + currentAction, "color: #000000; font-weight: bold");
+          console.log("  %cprev state ", "color: #C0C0C0; font-weight: bold", state);
+          console.log("  %cparams     ", "color: #0000FF; font-weight: bold", args[0]);
+          console.log("  %cnext state ", "color: #008000; font-weight: bold", nextState);
+        }
+
+        state = nextState;
+        provider.setState(nextState);
       }));
     }, {});
     var Provider = createProvider(setProvider, context.Provider, initialState);

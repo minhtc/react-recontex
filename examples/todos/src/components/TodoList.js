@@ -8,7 +8,7 @@ const TodoList = ({ todos }) => (
       <Todo
         key={todo.id}
         todo={todo}
-        onClick={() => actions.toggleItem(todo.id)}
+        onClick={() => actions.toggleItem({ todoId: todo.id})}
       />
     ))}
   </ul>

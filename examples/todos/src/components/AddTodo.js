@@ -12,7 +12,7 @@ const AddTodo = () => {
           if (!input.value.trim()) {
             return
           }
-          actions.addTodo(input.value)
+          actions.addTodo({ newTodoContent: input.value})
           input.value = ''
         }}
       >

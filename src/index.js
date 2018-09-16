@@ -1,7 +1,8 @@
 import React from "react";
 
+// create Context Provider to wrap root Component
 const createProvider = (setProvider, Provider, initialState) =>
-  class StoreProvider extends React.PureComponent {
+  class RootProvider extends React.PureComponent {
     constructor(props) {
       super(props);
       this.state = initialState;
@@ -13,6 +14,7 @@ const createProvider = (setProvider, Provider, initialState) =>
     }
   };
 
+// inject root state into component
 const createConnect = Consumer => mapStateToProps => ComponentToWrap => {
   const ConnectedComponent = props => {
     return (
@@ -32,19 +34,43 @@ const createConnect = Consumer => mapStateToProps => ComponentToWrap => {
   return ConnectedComponent;
 };
 
-export default (initialState = {}, actionsCreators = {}) => {
+// create store
+export default (initialState, actionsCreators = {}, logger = false) => {
   const context = React.createContext();
+  const setProvider = self => (provider = self);
   let provider = null;
   let state = initialState;
-  const setProvider = self => (provider = self);
 
   const actions = Object.keys(actionsCreators).reduce(
     (accumulator, currentAction) => ({
       ...accumulator,
       [currentAction]: (...args) => {
-        const changes = actionsCreators[currentAction](state, ...args);
-        state = { ...state, ...changes }
-        provider.setState(state);
+        const update = actionsCreators[currentAction](state, ...args);
+        const nextState = { ...state, ...update };
+        if (logger) {
+          console.log(
+            "---> ACTION: %c" + currentAction,
+            `color: #000000; font-weight: bold`
+          );
+          console.log(
+            "  %cprev state ",
+            `color: #C0C0C0; font-weight: bold`,
+            state
+          );
+          console.log(
+            "  %cparams     ",
+            `color: #0000FF; font-weight: bold`,
+            args[0]
+          );
+          console.log(
+            "  %cnext state ",
+            `color: #008000; font-weight: bold`,
+            nextState
+          );
+        }
+
+        state = nextState;
+        provider.setState(nextState);
       }
     }),
     {}

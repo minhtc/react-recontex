@@ -4,6 +4,9 @@ A lightweight state management using React Context API, inspired by Redux
 
 Super simple and easy to approach react (react-native) application
 
+Screenshots:
+![Logger Example](https://github.com/minhtc/react-recontext/tree/master/screenshots/logger.gif "Logger Example")
+
 ## Installation
 
     npm install --save react-recontext
@@ -35,7 +38,8 @@ Super simple and easy to approach react (react-native) application
 
         export const { Provider, connect, actions } = createStore(
             initialState,
-            actionsCreators
+            actionsCreators,
+            true //enable debugging
         );
 
 2)  Wrap root component with Provider
