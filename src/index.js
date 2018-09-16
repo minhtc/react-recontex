@@ -48,6 +48,11 @@ export default (initialState, actionsCreators = {}, logger = false) => {
         const update = actionsCreators[currentAction](state, ...args);
         const nextState = { ...state, ...update };
         if (logger) {
+          let params = "nothing";
+          if (args) {
+            if (args.length === 1) params = args[0];
+            else if (args.length > 1) params = args;
+          }
           console.log(
             "---> ACTION: %c" + currentAction,
             `color: #000000; font-weight: bold`
@@ -60,7 +65,7 @@ export default (initialState, actionsCreators = {}, logger = false) => {
           console.log(
             "  %cparams     ",
             `color: #0000FF; font-weight: bold`,
-            args[0]
+            params
           );
           console.log(
             "  %cnext state ",

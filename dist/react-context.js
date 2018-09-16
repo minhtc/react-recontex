@@ -199,9 +199,15 @@
         var nextState = _objectSpread({}, state, update);
 
         if (logger) {
+          var params = "nothing";
+
+          if (args) {
+            if (args.length === 1) params = args[0];else if (args.length > 1) params = args;
+          }
+
           console.log("---> ACTION: %c" + currentAction, "color: #000000; font-weight: bold");
           console.log("  %cprev state ", "color: #C0C0C0; font-weight: bold", state);
-          console.log("  %cparams     ", "color: #0000FF; font-weight: bold", args[0]);
+          console.log("  %cparams     ", "color: #0000FF; font-weight: bold", params);
           console.log("  %cnext state ", "color: #008000; font-weight: bold", nextState);
         }
 
