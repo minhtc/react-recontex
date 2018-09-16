@@ -29,6 +29,7 @@ jobs:
       - deploy:
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/react-recontext/.npmrc
+            npm run build
             npm publish
 
       - save_cache:
