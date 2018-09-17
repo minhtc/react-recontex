@@ -14,6 +14,11 @@ export default {
       id: 3,
       content: "Gym",
       completed: false
+    },
+    {
+      id: 4,
+      content: "Swim",
+      completed: false
     }
   ]
 };

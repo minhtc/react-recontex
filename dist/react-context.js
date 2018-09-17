@@ -174,8 +174,13 @@
         return ConnectedComponent;
       };
     };
-  }; // create store
+  };
 
+  var actionNameToTypes = function actionNameToTypes(actionName) {
+    return actionName.replace(/([A-Z])/g, "_$1").trim().toUpperCase();
+  };
+
+  var loggerStyle = "font-weight: bold"; // create store
 
   var index = (function (initialState) {
     var actionsCreators = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -189,7 +194,7 @@
     var provider = null;
     var state = initialState;
     var actions = Object.keys(actionsCreators).reduce(function (accumulator, currentAction) {
-      return _objectSpread({}, accumulator, _defineProperty({}, currentAction, function () {
+      return _objectSpread({}, accumulator, _defineProperty({}, actionNameToTypes(currentAction), function () {
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
@@ -205,22 +210,41 @@
             if (args.length === 1) params = args[0];else if (args.length > 1) params = args;
           }
 
-          console.log("---> ACTION: %c" + currentAction, "color: #000000; font-weight: bold");
-          console.log("  %cprev state ", "color: #C0C0C0; font-weight: bold", state);
-          console.log("  %cparams     ", "color: #0000FF; font-weight: bold", params);
-          console.log("  %cnext state ", "color: #008000; font-weight: bold", nextState);
+          console.log("---> ACTION: %c" + actionNameToTypes(currentAction), "color: #000000; ".concat(loggerStyle));
+          console.log("  %cprev state ", "color: #708090; ".concat(loggerStyle), state);
+          console.log("  %cparams     ", "color: #0000FF; ".concat(loggerStyle), params);
+          console.log("  %cnext state ", "color: #008000; ".concat(loggerStyle), nextState);
         }
 
         state = nextState;
         provider.setState(nextState);
       }));
     }, {});
+
+    var dispatch = function dispatch(actionType) {
+      if (!actionType) {
+        console.log("%cAction Type is required!", "color: #FFA500; ".concat(loggerStyle));
+        return;
+      }
+
+      if (!actions[actionType]) {
+        console.warn("%cAction with type ".concat(actionType, " is not defined"), "color: #FFA500; ".concat(loggerStyle));
+        return;
+      }
+
+      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
+
+      actions[actionType].apply(actions, args);
+    };
+
     var Provider = createProvider(setProvider, context.Provider, initialState);
     var connect = createConnect(context.Consumer);
     return {
       Provider: Provider,
       connect: connect,
-      actions: actions
+      dispatch: dispatch
     };
   });
 

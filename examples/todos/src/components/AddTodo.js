@@ -1,28 +1,26 @@
-import React from 'react'
-import { actions } from '../recontext/store'
+import React from "react";
+import { dispatch } from "../recontext/store";
 
 const AddTodo = () => {
-  let input
+  let input;
 
   return (
     <div>
       <form
         onSubmit={e => {
-          e.preventDefault()
+          e.preventDefault();
           if (!input.value.trim()) {
-            return
+            return;
           }
-          actions.addTodo({ newTodoContent: input.value})
-          input.value = ''
+          dispatch("ADD_TODO", { newTodoContent: input.value });
+          input.value = "";
         }}
       >
-        <input ref={node => input = node} />
-        <button type="submit">
-          Add Todo
-        </button>
+        <input ref={node => (input = node)} />
+        <button type="submit">Add Todo</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddTodo
+export default AddTodo;

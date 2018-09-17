@@ -4,7 +4,7 @@ import actionsCreators from "./actions/index";
 
 const enableLogger = true;
 
-export const { Provider, connect, actions } = createStore(
+export const { Provider, connect, dispatch } = createStore(
   initialState,
   actionsCreators,
   enableLogger

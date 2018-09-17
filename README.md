@@ -2,21 +2,48 @@
 
 [![npm version](https://badge.fury.io/js/react-recontext.svg)](https://badge.fury.io/js/react-recontext) [![CircleCI](https://circleci.com/gh/minhtc/react-recontext/tree/master.svg?style=svg)](https://circleci.com/gh/minhtc/react-recontext/tree/master) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/minhtc/react-recontext/graphs/contributors)
 
-A lightweight state management using React Context API, inspired by Flux, Redux
+A lightweight state management inspired by Flux, Redux, based on the latest React Context API.
 
-SUPER simple and easy to approach react (react-native) application
+SUPER simple and easy to build react, react-native application and flux architecture.
 
-Screenshots:
+Following the Flux Architechture but only one root Store:
 
-![Logger Example](https://github.com/minhtc/react-recontext/raw/master/screenshots/logger.gif "Logger Example")
+<center>
+
+![Flux Simple Diagram](https://facebook.github.io/flux/img/flux-simple-f8-diagram-with-client-action-1300w.png "Flux Simple Diagram")
+
+</center>
 
 ## Installation
 
     npm install --save react-recontext
 
+_or_
+
+    yarn add react-recontext
+
+## API
+
+1. **createStore**: of course, to create the Store! 😗
+2. **Provider**: wrap the root component
+3. **connect**: connect any component (View) to Store.
+4. **dispatch**: dispatch an event to update the Store
+
+Note: All action event types are generated automatically. For example, when you create an action:
+
+        const actionsCreators = {
+            addTodoItem: (state, { item }) => ({
+                list: state.list.push(item)
+            })
+        };
+
+The action event type was also created, so you only need to change the action name from camel case into screaming snake case like this:
+
+        dispatch("ADD_TODO_ITEM", { item: item })
+
 ## Usage
 
-Included examples you can play with: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/todos)
+There is a detailted example you can play with: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/todos)
 
 1.  Create store.js
 
@@ -41,7 +68,7 @@ Included examples you can play with: [Todo App Example](https://github.com/minht
             })
         };
 
-        export const { Provider, connect, actions } = createStore(
+        export const { Provider, connect, dispatch } = createStore(
             initialState,
             actionsCreators,
             true //enable debugging
@@ -80,7 +107,7 @@ Included examples you can play with: [Todo App Example](https://github.com/minht
 
         import React from "react";
         import Todo from "./Todo";
-        import { connect, actions } from "./store";
+        import { connect, dispatch } from "./store";
 
         const TodoList = ({ todos }) => (
             <ul>
@@ -88,7 +115,7 @@ Included examples you can play with: [Todo App Example](https://github.com/minht
                     <Todo
                         key={todo.id}
                         todo={todo}
-                        onClick={() => actions.toggleItem({ todoId: todo.id })}
+                        onClick={() => dispatch("TOGGLE_ITEM", ({ todoId: todo.id }))}
                     />
                 ))}
             </ul>
@@ -99,3 +126,11 @@ Included examples you can play with: [Todo App Example](https://github.com/minht
         });
 
         export default connect(mapStateToProps)(TodoList);
+
+React-recontext logger example:
+
+<center>
+
+![Logger Example](https://github.com/minhtc/react-recontext/raw/master/screenshots/logger.gif "Logger Example")
+
+</center>

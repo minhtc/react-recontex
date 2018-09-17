@@ -1,6 +1,6 @@
 import React from "react";
 import Todo from "./Todo";
-import { connect, actions } from "../recontext/store";
+import { connect, dispatch } from "../recontext/store";
 
 const TodoList = ({ todos }) => (
   <ul>
@@ -8,7 +8,7 @@ const TodoList = ({ todos }) => (
       <Todo
         key={todo.id}
         todo={todo}
-        onClick={() => actions.toggleItem({ todoId: todo.id})}
+        onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })}
       />
     ))}
   </ul>

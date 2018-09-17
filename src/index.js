@@ -34,6 +34,14 @@ const createConnect = Consumer => mapStateToProps => ComponentToWrap => {
   return ConnectedComponent;
 };
 
+const actionNameToTypes = actionName => {
+  return actionName
+    .replace(/([A-Z])/g, "_$1")
+    .trim()
+    .toUpperCase();
+};
+const loggerStyle = "font-weight: bold";
+
 // create store
 export default (initialState, actionsCreators = {}, logger = false) => {
   const context = React.createContext();
@@ -44,7 +52,7 @@ export default (initialState, actionsCreators = {}, logger = false) => {
   const actions = Object.keys(actionsCreators).reduce(
     (accumulator, currentAction) => ({
       ...accumulator,
-      [currentAction]: (...args) => {
+      [actionNameToTypes(currentAction)]: (...args) => {
         const update = actionsCreators[currentAction](state, ...args);
         const nextState = { ...state, ...update };
         if (logger) {
@@ -54,22 +62,22 @@ export default (initialState, actionsCreators = {}, logger = false) => {
             else if (args.length > 1) params = args;
           }
           console.log(
-            "---> ACTION: %c" + currentAction,
-            `color: #000000; font-weight: bold`
+            "---> ACTION: %c" + actionNameToTypes(currentAction),
+            `color: #000000; ${loggerStyle}`
           );
           console.log(
             "  %cprev state ",
-            `color: #C0C0C0; font-weight: bold`,
+            `color: #708090; ${loggerStyle}`,
             state
           );
           console.log(
             "  %cparams     ",
-            `color: #0000FF; font-weight: bold`,
+            `color: #0000FF; ${loggerStyle}`,
             params
           );
           console.log(
             "  %cnext state ",
-            `color: #008000; font-weight: bold`,
+            `color: #008000; ${loggerStyle}`,
             nextState
           );
         }
@@ -81,12 +89,30 @@ export default (initialState, actionsCreators = {}, logger = false) => {
     {}
   );
 
+  const dispatch = (actionType, ...args) => {
+    if (!actionType) {
+      console.log(
+        "%cAction Type is required!",
+        `color: #FFA500; ${loggerStyle}`
+      );
+      return;
+    }
+    if (!actions[actionType]) {
+      console.warn(
+        `%cAction with type ${actionType} is not defined`,
+        `color: #FFA500; ${loggerStyle}`
+      );
+      return;
+    }
+    actions[actionType](...args);
+  };
+
   const Provider = createProvider(setProvider, context.Provider, initialState);
   const connect = createConnect(context.Consumer);
 
   return {
     Provider,
     connect,
-    actions
+    dispatch
   };
 };

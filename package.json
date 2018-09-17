@@ -1,7 +1,7 @@
 {
   "name": "react-recontext",
-  "version": "1.1.5",
-  "description": "A lightweight state management using React Context API, inspired by Redux",
+  "version": "2.0.0",
+  "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/react-context.js",
   "scripts": {
     "build:umd": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c -o dist/react-context.js",
@@ -25,7 +25,8 @@
     "react-context",
     "state",
     "lightweight",
-    "flux"
+    "flux",
+    "state"
   ],
   "peerDependencies": {
     "react": "^16.5.0"
