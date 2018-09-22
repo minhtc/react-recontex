@@ -1,6 +1,6 @@
 {
   "name": "react-recontext",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/react-context.js",
   "scripts": {
@@ -32,14 +32,14 @@
     "react": "^16.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.1",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "cross-env": "^5.2.0",
-    "rollup": "^0.65.2",
+    "rollup": "^0.66.2",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-uglify": "^5.0.2"
+    "rollup-plugin-uglify": "^6.0.0"
   }
 }
