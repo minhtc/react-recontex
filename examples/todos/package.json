@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "react-recontext": "file:../../",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-recontext": "^2.0.5",
     "react-scripts": "1.1.5"
   },
   "scripts": {
