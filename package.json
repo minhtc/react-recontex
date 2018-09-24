@@ -1,6 +1,6 @@
 {
   "name": "react-recontext",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/react-context.js",
   "scripts": {
