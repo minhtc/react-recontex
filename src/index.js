@@ -1,53 +1,47 @@
-import React from "react";
+/* eslint-disable no-console, import/no-unresolved */
 
-// create Context Provider to wrap root Component
-const createProvider = (setProvider, Provider, initialState) =>
-  class RootProvider extends React.PureComponent {
-    constructor(props) {
-      super(props);
-      this.state = initialState;
-      setProvider(this);
-    }
+import React from 'react';
 
-    render() {
-      return <Provider value={this.state}>{this.props.children}</Provider>;
-    }
-  };
+const createProvider = (setProvider, Provider, initialState) => class RootProvider extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+    setProvider(this);
+  }
 
-// inject root state into component
-const createConnect = Consumer => mapStateToProps => ComponentToWrap => {
-  const ConnectedComponent = props => {
-    return (
-      <Consumer>
-        {state => {
-          const stateToProps = mapStateToProps(state || {});
-          return <ComponentToWrap {...props} {...stateToProps} />;
-        }}
-      </Consumer>
-    );
-  };
+  render() {
+    return <Provider value={this.state}>{this.props.children}</Provider>;
+  }
+};
 
-  const displayName =
-    ComponentToWrap.displayName || ComponentToWrap.name || "NoName";
+const createConnect = Consumer => mapStateToProps => (ComponentToWrap) => {
+  const ConnectedComponent = props => (
+    <Consumer>
+      {(state) => {
+        const stateToProps = mapStateToProps(state || {});
+        return <ComponentToWrap {...props} {...stateToProps} />;
+      }}
+    </Consumer>
+  );
+
+  const displayName = ComponentToWrap.displayName || ComponentToWrap.name || 'NoName';
   ConnectedComponent.displayName = `Consumer(${displayName})`;
 
   return ConnectedComponent;
 };
 
-const actionNameToTypes = actionName => {
-  return actionName
-    .replace(/([A-Z])/g, "_$1")
-    .trim()
-    .toUpperCase();
-};
-const loggerStyle = "font-weight: bold";
+const actionNameToTypes = actionName => actionName
+  .replace(/([A-Z])/g, '_$1')
+  .trim()
+  .toUpperCase();
+const loggerStyle = 'font-weight: bold';
 
-// create store
 export default (initialState, actionsCreators = {}, logger = false) => {
   const context = React.createContext();
-  const setProvider = self => (provider = self);
   let provider = null;
   let state = initialState;
+
+  const setProvider = self => (provider = self);
 
   const actions = Object.keys(actionsCreators).reduce(
     (accumulator, currentAction) => ({
@@ -56,51 +50,51 @@ export default (initialState, actionsCreators = {}, logger = false) => {
         const update = actionsCreators[currentAction](state, ...args);
         const nextState = { ...state, ...update };
         if (logger) {
-          let params = "nothing";
+          let params = 'nothing';
           if (args) {
             if (args.length === 1) params = args[0];
             else if (args.length > 1) params = args;
           }
           console.log(
-            "---> ACTION: %c" + actionNameToTypes(currentAction),
-            `color: #000000; ${loggerStyle}`
+            `---> ACTION: %c${actionNameToTypes(currentAction)}`,
+            `color: #000000; ${loggerStyle}`,
           );
           console.log(
-            "  %cprev state ",
+            '  %cprev state ',
             `color: #708090; ${loggerStyle}`,
-            state
+            state,
           );
           console.log(
-            "  %cparams     ",
+            '  %cparams     ',
             `color: #0000FF; ${loggerStyle}`,
-            params
+            params,
           );
           console.log(
-            "  %cnext state ",
+            '  %cnext state ',
             `color: #008000; ${loggerStyle}`,
-            nextState
+            nextState,
           );
         }
 
         state = nextState;
         provider.setState(nextState);
-      }
+      },
     }),
-    {}
+    {},
   );
 
   const dispatch = (actionType, ...args) => {
     if (!actionType) {
       console.log(
-        "%cAction Type is required!",
-        `color: #FFA500; ${loggerStyle}`
+        '%cAction Type is required!',
+        `color: #FFA500; ${loggerStyle}`,
       );
       return;
     }
     if (!actions[actionType]) {
       console.warn(
         `%cAction with type ${actionType} is not defined`,
-        `color: #FFA500; ${loggerStyle}`
+        `color: #FFA500; ${loggerStyle}`,
       );
       return;
     }
@@ -113,6 +107,6 @@ export default (initialState, actionsCreators = {}, logger = false) => {
   return {
     Provider,
     connect,
-    dispatch
+    dispatch,
   };
 };

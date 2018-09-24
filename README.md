@@ -6,7 +6,7 @@ A lightweight state management inspired by Flux, Redux, based on the latest Reac
 
 SUPER simple and easy to build react, react-native application and flux architecture.
 
-Following the Flux Architechture but only one root Store:
+Following the Flux Architechture but with only one root Store:
 
 <center>
 
@@ -24,110 +24,131 @@ _or_
 
 ## API
 
-1. **createStore**: of course, to create the Store! 😗
-2. **Provider**: wrap the root component
-3. **connect**: connect any component (View) to Store.
-4. **dispatch**: dispatch an event to update the Store
+1. **createStore(initial-state, actions, enable-logger)**: of course, to create the app's root Store! 😗
+2. **<Provider/>**: wrap the root component. (normally is <App /> Component)
+3. **connect(state-to-props)(component)**: connect React Component to Store, very easy to get value from store in any components
+4. **dispatch(action-type, {params})**: dispatch an event to update the Store value, from everywhere.
 
-Note: All action event types are generated automatically. For example, when you create an action:
+### Important and funny part:
 
-        const actionsCreators = {
-            addTodoItem: (state, { item }) => ({
-                list: state.list.push(item)
-            })
-        };
+All action event types are generated automatically, you don't need to create action Types anymore. For example:
 
-The action event type was also created, so you only need to change the action name from camel case into screaming snake case like this:
+    const actionsCreators = {
+        addTodoItem: (state, { item }) => ({
+            list: state.list.push(item)
+        })
+    };
 
-        dispatch("ADD_TODO_ITEM", { item: item })
+You only need to change the action name from camel case into screaming snake case (`addTodoItem` => `ADD_TODO_ITEM`) to dispatch action.
+
+    dispatch("ADD_TODO_ITEM", { item: item })
+
+## Example
+
+There are some examples app you can play with:
+
+- [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/todos)
+- [Audiobook React Native App](https://github.com/minhtc/sachnoiapp)
+- ...
 
 ## Usage
 
-There is a detailted example you can play with: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/todos)
+Only **3 steps** to start with react-recontext
 
-1.  Create store.js
+1.  Create **store.js**
 
-        import createStore from "react-recontext";
+```js
+import createStore from "react-recontext";
 
-        const initialState = {
-            todos: [
-                {
-                    id: 1,
-                    content: "Drink water",
-                    completed: true
-                },
-            ]
-        };
+// create app initial state
+const initialState = {
+    todos: []
+};
 
-        const actionsCreators = {
-            toggleItem: (state, { todoId }) => ({
-                todos: state.todos.map(
-                    todo =>
-                        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
-                    )
-            })
-        };
+// create app actions, all action type would be generated automatically
+const actionsCreators = {
+    toggleItem: (state, { todoId }) => ({
+        todos: state.todos.map(
+            todo =>
+                todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+            )
+    })
+};
 
-        export const { Provider, connect, dispatch } = createStore(
-            initialState,
-            actionsCreators,
-            true //enable debugging
-        );
+// enable logger for debugging
+const enableLogger = __DEV__
 
-2)  Wrap root component with Provider
+// createStore required 3 params, and return a recontext store
+const store =  createStore(initialState, actionsCreators, enableLogger);
 
-    // react:
+// export store
+export store
+```
 
-        import React from "react";
-        import ReactDOM from "react-dom";
-        import { Provider } from "./store";
-        import App from "./App";
+2.  Wrap root component with Provider
 
-        ReactDOM.render(
-            <Provider>
-                <App />
-            </Provider>,
-            document.getElementById("root")
-        );
+- react:
 
-    // react-native + react-nativation
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "./store";
+import App from "./App";
 
-        import { createStackNavigator } from "react-navigation";
-        import { Provider } from "./store";
+ReactDOM.render(
+  <Provider>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+```
 
-        const AppNavigator = createStackNavigator(...)
+- react-native + react-nativation
 
-        const App = () => (
-            <Provider>
-                <AppNavigator />
-            </Provider>
-        );
+```js
+import { createStackNavigator } from "react-navigation";
+import { Provider } from "./store";
 
-3)  Connect component to get data and call action anywhere you want
+const AppNavigator = createStackNavigator(...)
 
-        import React from "react";
-        import Todo from "./Todo";
-        import { connect, dispatch } from "./store";
+// wrap root component with <Provider /> that imported from recontext store
+const App = () => (
+    <Provider>
+        <AppNavigator />
+    </Provider>
+);
+```
 
-        const TodoList = ({ todos }) => (
-            <ul>
-                {todos.map(todo => (
-                    <Todo
-                        key={todo.id}
-                        todo={todo}
-                        onClick={() => dispatch("TOGGLE_ITEM", ({ todoId: todo.id }))}
-                    />
-                ))}
-            </ul>
-        );
+3.  Connect component to get data and call action anywhere you want
 
-        const mapStateToProps = state => ({
-            todos: state.todos
-        });
+```js
+import React from "react";
+import Todo from "./Todo";
+import { connect, dispatch } from "./store";
 
-        export default connect(mapStateToProps)(TodoList);
+const TodoList = ({ todos }) => (
+  <ul>
+    {todos.map(todo => (
+      <Todo
+        key={todo.id}
+        todo={todo}
+        onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })} // dispatch action type to update store value
+      />
+    ))}
+  </ul>
+);
 
-React-recontext logger example:
+const mapStateToProps = state => ({
+  todos: state.todos
+});
+
+// connect component to get value from store
+export default connect(mapStateToProps)(TodoList);
+```
+
+## Debugging
+
+Supporting debugging by print all the store changes, example:
 
 <center>
 
