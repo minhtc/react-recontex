@@ -22,16 +22,23 @@ _or_
 
     yarn add react-recontext
 
-## API
+## Api
 
-1. **createStore(initial-state, actions, enable-logger)**: of course, to create the app's root Store! 😗
-2. **<Provider/>**: wrap the root component. (normally is <App /> Component)
-3. **connect(state-to-props)(component)**: connect React Component to Store, very easy to get value from store in any components
-4. **dispatch(action-type, {params})**: dispatch an event to update the Store value, from everywhere.
+1. **`createStore(initialState, actionsCreators, enableLogger)`**: of course, to create the app's root Store! 😗
+   - **initialState**: vanila or immutable js object, contains store default value.
+   - **actionsCreators**: js object contains function to update store value
+   - **enableLogger**: boolean flag for debugging
+2. **`<Provider />`**: wrap the root Component.
+   - The root component usally is `<App />` Component
+3. **`connect(mapStateToProps)(Component)`**: connect React Component to Store, very easy to get value from store in any components.
+   - **mapStateToProps**: a function to define which store value you want to inject into Component props
+4. **`dispatch(actionType, params)`**: dispatch an event to update the Store value, from everywhere.
+   - **actionType**: a string corresponding to the action name in `actionsCreators`
+   - **params**: should be an object contains the value you want to update in store
 
-### Important and funny part:
+### Important and _funny_ part:
 
-All action event types are generated automatically, you don't need to create action Types anymore. For example:
+You don't need to create action types anymore, all action type would be generated automatically. For example:
 
     const actionsCreators = {
         addTodoItem: (state, { item }) => ({
