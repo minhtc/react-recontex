@@ -25,7 +25,7 @@ _or_
 ## Api
 
 1. **`createStore(initialState, actionsCreators, enableLogger)`**: of course, to create the app's root Store! 😗
-   - **initialState**: vanila or immutable js object, contains store default value.
+   - **initialState**: vanilla or immutable js object, contains store default value.
    - **actionsCreators**: js object contains function to update store value
    - **enableLogger**: boolean flag for debugging
 2. **`<Provider />`**: wrap the root Component.

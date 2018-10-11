@@ -156,8 +156,7 @@
         return RootProvider;
       }(React.PureComponent)
     );
-  }; // inject root state into component
-
+  };
 
   var createConnect = function createConnect(Consumer) {
     return function (mapStateToProps) {
@@ -169,7 +168,7 @@
           });
         };
 
-        var displayName = ComponentToWrap.displayName || ComponentToWrap.name || "NoName";
+        var displayName = ComponentToWrap.displayName || ComponentToWrap.name || 'NoName';
         ConnectedComponent.displayName = "Consumer(".concat(displayName, ")");
         return ConnectedComponent;
       };
@@ -177,22 +176,21 @@
   };
 
   var actionNameToTypes = function actionNameToTypes(actionName) {
-    return actionName.replace(/([A-Z])/g, "_$1").trim().toUpperCase();
+    return actionName.replace(/([A-Z])/g, '_$1').trim().toUpperCase();
   };
 
-  var loggerStyle = "font-weight: bold"; // create store
-
+  var loggerStyle = 'font-weight: bold';
   var index = (function (initialState) {
     var actionsCreators = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var logger = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     var context = React.createContext();
+    var provider = null;
+    var state = initialState;
 
     var setProvider = function setProvider(self) {
       return provider = self;
     };
 
-    var provider = null;
-    var state = initialState;
     var actions = Object.keys(actionsCreators).reduce(function (accumulator, currentAction) {
       return _objectSpread({}, accumulator, _defineProperty({}, actionNameToTypes(currentAction), function () {
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -204,16 +202,16 @@
         var nextState = _objectSpread({}, state, update);
 
         if (logger) {
-          var params = "nothing";
+          var params = 'nothing';
 
           if (args) {
             if (args.length === 1) params = args[0];else if (args.length > 1) params = args;
           }
 
-          console.log("---> ACTION: %c" + actionNameToTypes(currentAction), "color: #000000; ".concat(loggerStyle));
-          console.log("  %cprev state ", "color: #708090; ".concat(loggerStyle), state);
-          console.log("  %cparams     ", "color: #0000FF; ".concat(loggerStyle), params);
-          console.log("  %cnext state ", "color: #008000; ".concat(loggerStyle), nextState);
+          console.log("---> ACTION: %c".concat(actionNameToTypes(currentAction)), "color: #000000; ".concat(loggerStyle));
+          console.log('  %cprev state ', "color: #708090; ".concat(loggerStyle), state);
+          console.log('  %cparams     ', "color: #0000FF; ".concat(loggerStyle), params);
+          console.log('  %cnext state ', "color: #008000; ".concat(loggerStyle), nextState);
         }
 
         state = nextState;
@@ -223,7 +221,7 @@
 
     var dispatch = function dispatch(actionType) {
       if (!actionType) {
-        console.log("%cAction Type is required!", "color: #FFA500; ".concat(loggerStyle));
+        console.log('%cAction Type is required!', "color: #FFA500; ".concat(loggerStyle));
         return;
       }
 
