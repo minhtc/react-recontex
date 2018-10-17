@@ -1,6 +1,6 @@
 {
   "name": "react-recontext",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/index.js",
   "scripts": {
@@ -21,6 +21,11 @@
     "name": "Minh Tran",
     "url": "https://github.com/minhtc"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/minhtc/react-recontext"
+  },
+  "homepage": "https://github.com/minhtc/react-recontext#readme",
   "license": "ISC",
   "keywords": [
     "react",
