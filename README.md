@@ -56,9 +56,12 @@ You don't need to create action types anymore, all action type would be generate
 
 There are some examples app you can play with:
 
-- [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/todos)
-- [Audiobook React Native App](https://github.com/minhtc/sachnoiapp)
-- ...
+- Web App Todos: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/webapp)
+- Web App Hackathon Team Matcher: [Hackathon team matcher](https://junctionxhanoi.meohack.com)
+- React Native App Todos: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/nativeapp)
+- React Native Audiobook: [Audiobook React Native App](https://github.com/minhtc/sachnoiapp)
+- Expo App Todos: [Todo App Example](https://snack.expo.io/@minhtc/react-recontext-demo)
+- ...more is coming...
 
 ## Usage
 
