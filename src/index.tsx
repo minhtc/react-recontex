@@ -1,69 +1,32 @@
 import * as React from "react";
 
-type TMapToProps = (state: object) => object;
-
-type TSetProvider = (self: any) => void;
+import createConnect from "./createConnect";
+import createProvider from "./createProvider";
+import { actionNameToTypes, printDebugInfo, printWarning } from "./utils";
 
 interface IProvider {
   setState: (state: object) => void;
 }
-
 interface IActions {
   [key: string]: (params?: any) => void;
 }
-
 interface IActionCreators {
-  [key: string]: (state: object, params?: any) => void;
+  [key: string]: (state: object, params?: any) => object;
+}
+interface IStore {
+  Provider: React.ComponentType;
+  dispatch: (actionType: string, ...args: any[]) => void;
+  connect(
+    mapStateToProps: (state: object) => object
+  ): (ComponentToWrap: React.ComponentType) => void;
 }
 
-const createProvider = (
-  setProvider: TSetProvider,
-  Provider: React.Provider<any>,
-  initialState: object
-) =>
-  class RootProvider extends React.PureComponent<{}> {
-    constructor(props: any) {
-      super(props);
-      this.state = initialState;
-      setProvider(this);
-    }
-
-    public render() {
-      return <Provider value={this.state}>{this.props.children}</Provider>;
-    }
-  };
-
-const createConnect = (Consumer: React.Consumer<any>) => (
-  mapStateToProps: TMapToProps
-) => (ComponentToWrap: React.ComponentType) => {
-  const ConnectedComponent = (props: any) => (
-    <Consumer>
-      {(state: any) => {
-        const stateToProps = mapStateToProps(state || {});
-        return <ComponentToWrap {...props} {...stateToProps} />;
-      }}
-    </Consumer>
-  );
-
-  const displayName = ComponentToWrap.displayName || "NoName";
-  ConnectedComponent.displayName = `Consumer(${displayName})`;
-
-  return ConnectedComponent;
-};
-
-const actionNameToTypes = (actionName: string) =>
-  actionName
-    .replace(/([A-Z])/g, "_$1")
-    .trim()
-    .toUpperCase();
-const loggerStyle = "font-weight: bold";
-
-export default (
-  initialState: object,
+export default function createStore(
+  initialState: object = {},
   actionsCreators: IActionCreators = {},
   logger: boolean = false
-) => {
-  const context = React.createContext({});
+): IStore {
+  const context = React.createContext(initialState);
   let provider: IProvider;
   let state = initialState;
 
@@ -72,39 +35,12 @@ export default (
   const actions: IActions = Object.keys(actionsCreators).reduce(
     (accumulator: object, currentAction) => ({
       ...accumulator,
-      [actionNameToTypes(currentAction)]: (...args: any) => {
-        const update = actionsCreators[currentAction](state, ...args);
-        const nextState: object = Object.assign({}, state, update);
+      [actionNameToTypes(currentAction)]: (...args: any[]) => {
+        const update: object = actionsCreators[currentAction](state, ...args);
+        const nextState: object = { ...state, ...update };
         if (logger) {
-          let params = {};
-          if (args) {
-            if (args.length === 1) {
-              params = args[0];
-            } else if (args.length > 1) {
-              params = args;
-            }
-          }
-          console.log(
-            `---> ACTION: %c${actionNameToTypes(currentAction)}`,
-            `color: #000000; ${loggerStyle}`
-          );
-          console.log(
-            "  %cprev state ",
-            `color: #708090; ${loggerStyle}`,
-            state
-          );
-          console.log(
-            "  %cparams     ",
-            `color: #0000FF; ${loggerStyle}`,
-            params
-          );
-          console.log(
-            "  %cnext state ",
-            `color: #008000; ${loggerStyle}`,
-            nextState
-          );
+          printDebugInfo(currentAction, state, args, nextState);
         }
-
         state = nextState;
         provider.setState(nextState);
       }
@@ -112,22 +48,14 @@ export default (
     {}
   );
 
-  const dispatch = (actionType: string, ...args: any) => {
+  const dispatch = (actionType: string, ...args: any[]) => {
     if (!actionType) {
-      console.log(
-        "%cAction Type is required!",
-        `color: #FFA500; ${loggerStyle}`
-      );
-      return;
+      printWarning("Action Type is required!");
+    } else if (!actions[actionType]) {
+      printWarning(`Ation with type ${actionType} is not defined`);
+    } else {
+      actions[actionType](...args);
     }
-    if (!actions[actionType]) {
-      console.warn(
-        `%cAction with type ${actionType} is not defined`,
-        `color: #FFA500; ${loggerStyle}`
-      );
-      return;
-    }
-    actions[actionType](...args);
   };
 
   const Provider = createProvider(setProvider, context.Provider, initialState);
@@ -138,4 +66,4 @@ export default (
     connect,
     dispatch
   };
-};
+}

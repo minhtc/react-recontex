@@ -1,78 +1,145 @@
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+'use strict';
+
+var React = require('react');
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __importStar(require("react"));
-const createProvider = (setProvider, Provider, initialState) => class RootProvider extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = initialState;
-        setProvider(this);
-    }
-    render() {
-        return React.createElement(Provider, { value: this.state }, this.props.children);
-    }
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
-const createConnect = (Consumer) => (mapStateToProps) => (ComponentToWrap) => {
-    const ConnectedComponent = (props) => (React.createElement(Consumer, null, (state) => {
-        const stateToProps = mapStateToProps(state || {});
-        return React.createElement(ComponentToWrap, Object.assign({}, props, stateToProps));
-    }));
-    const displayName = ComponentToWrap.displayName || "NoName";
-    ConnectedComponent.displayName = `Consumer(${displayName})`;
+
+var createConnect = (function (Consumer) { return function (mapStateToProps) { return function (ComponentToWrap) {
+    var ConnectedComponent = function (props) { return (React.createElement(Consumer, null, function (state) {
+        var stateToProps = mapStateToProps(state || {});
+        return React.createElement(ComponentToWrap, __assign({}, props, stateToProps));
+    })); };
+    var displayName = ComponentToWrap.displayName || "NoName";
+    ConnectedComponent.displayName = "Consumer(" + displayName + ")";
     return ConnectedComponent;
+}; }; });
+
+var createProvider = (function (setProvider, Provider, initialState) {
+    return /** @class */ (function (_super) {
+        __extends(RootProvider, _super);
+        function RootProvider(props) {
+            var _this = _super.call(this, props) || this;
+            _this.state = initialState;
+            setProvider(_this);
+            return _this;
+        }
+        RootProvider.prototype.render = function () {
+            return React.createElement(Provider, { value: this.state }, this.props.children);
+        };
+        return RootProvider;
+    }(React.PureComponent));
+});
+
+var loggerStyle = "font-weight: bold";
+var actionNameToTypes = function (actionName) {
+    return actionName
+        .replace(/([A-Z])/g, "_$1")
+        .trim()
+        .toUpperCase();
 };
-const actionNameToTypes = (actionName) => actionName
-    .replace(/([A-Z])/g, "_$1")
-    .trim()
-    .toUpperCase();
-const loggerStyle = "font-weight: bold";
-exports.default = (initialState, actionsCreators = {}, logger = false) => {
-    const context = React.createContext({});
-    let provider;
-    let state = initialState;
-    const setProvider = (self) => (provider = self);
-    const actions = Object.keys(actionsCreators).reduce((accumulator, currentAction) => (Object.assign({}, accumulator, { [actionNameToTypes(currentAction)]: (...args) => {
-            const update = actionsCreators[currentAction](state, ...args);
-            const nextState = Object.assign({}, state, update);
+var printDebugInfo = function (currentAction, state, args, nextState) {
+    var params = {};
+    if (args) {
+        if (args.length === 1) {
+            params = args[0];
+        }
+        else if (args.length > 1) {
+            params = args;
+        }
+    }
+    console.log("---> ACTION: %c" + actionNameToTypes(currentAction), "color: #000000; " + loggerStyle);
+    console.log("  %cprev state ", "color: #708090; " + loggerStyle, state);
+    console.log("  %cparams     ", "color: #0000FF; " + loggerStyle, params);
+    console.log("  %cnext state ", "color: #008000; " + loggerStyle, nextState);
+};
+var printWarning = function (message) {
+    console.log("%c" + message, "color: #FFA500; " + loggerStyle);
+};
+
+function createStore(initialState, actionsCreators, logger) {
+    if (initialState === void 0) { initialState = {}; }
+    if (actionsCreators === void 0) { actionsCreators = {}; }
+    if (logger === void 0) { logger = false; }
+    var context = React.createContext(initialState);
+    var provider;
+    var state = initialState;
+    var setProvider = function (self) { return (provider = self); };
+    var actions = Object.keys(actionsCreators).reduce(function (accumulator, currentAction) {
+        var _a;
+        return (__assign({}, accumulator, (_a = {}, _a[actionNameToTypes(currentAction)] = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var update = actionsCreators[currentAction].apply(actionsCreators, [state].concat(args));
+            var nextState = __assign({}, state, update);
             if (logger) {
-                let params = {};
-                if (args) {
-                    if (args.length === 1) {
-                        params = args[0];
-                    }
-                    else if (args.length > 1) {
-                        params = args;
-                    }
-                }
-                console.log(`---> ACTION: %c${actionNameToTypes(currentAction)}`, `color: #000000; ${loggerStyle}`);
-                console.log("  %cprev state ", `color: #708090; ${loggerStyle}`, state);
-                console.log("  %cparams     ", `color: #0000FF; ${loggerStyle}`, params);
-                console.log("  %cnext state ", `color: #008000; ${loggerStyle}`, nextState);
+                printDebugInfo(currentAction, state, args, nextState);
             }
             state = nextState;
             provider.setState(nextState);
-        } })), {});
-    const dispatch = (actionType, ...args) => {
+        }, _a)));
+    }, {});
+    var dispatch = function (actionType) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
         if (!actionType) {
-            console.log("%cAction Type is required!", `color: #FFA500; ${loggerStyle}`);
-            return;
+            printWarning("Action Type is required!");
         }
-        if (!actions[actionType]) {
-            console.warn(`%cAction with type ${actionType} is not defined`, `color: #FFA500; ${loggerStyle}`);
-            return;
+        else if (!actions[actionType]) {
+            printWarning("Ation with type " + actionType + " is not defined");
         }
-        actions[actionType](...args);
+        else {
+            actions[actionType].apply(actions, args);
+        }
     };
-    const Provider = createProvider(setProvider, context.Provider, initialState);
-    const connect = createConnect(context.Consumer);
+    var Provider = createProvider(setProvider, context.Provider, initialState);
+    var connect = createConnect(context.Consumer);
     return {
-        Provider,
-        connect,
-        dispatch
+        Provider: Provider,
+        connect: connect,
+        dispatch: dispatch
     };
-};
+}
+
+module.exports = createStore;

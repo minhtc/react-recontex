@@ -1,6 +1,6 @@
 {
   "name": "react-recontext",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/index.js",
   "scripts": {
@@ -10,12 +10,8 @@
     "check": "npm run format && npm run lint && npm run test",
     "clean": "rimraf dist coverage",
     "prebuild": "npm run check && npm run clean",
-    "build": "tsc --pretty",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags",
-    "prepublish": "npm run build",
-    "npm:publish": "npm run prepublish && npm publish"
+    "build": "rollup -c",
+    "npm:publish": "npm run build && npm publish"
   },
   "author": {
     "name": "Minh Tran",
@@ -44,9 +40,12 @@
   },
   "devDependencies": {
     "@types/react": "^16.4.18",
-    "cross-env": "^5.2.0",
     "prettier": "^1.14.3",
     "rimraf": "^2.6.2",
+    "rollup": "^0.66.6",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript2": "^0.17.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.1.3"
