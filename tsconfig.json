@@ -4,6 +4,7 @@
     "module": "ES2015",
     "jsx": "react",
     "declaration": true,
+    "declarationDir": "./dist",
     "outDir": "./dist"
   },
   "include": ["src/**/*"],
