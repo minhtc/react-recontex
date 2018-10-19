@@ -18,7 +18,7 @@ interface IStore {
   dispatch: (actionType: string, ...args: any[]) => void;
   connect(
     mapStateToProps: (state: object) => object
-  ): (ComponentToWrap: React.ComponentType) => void;
+  ): (ComponentToWrap: React.ComponentType) => React.ComponentType;
 }
 
 export default function createStore(
