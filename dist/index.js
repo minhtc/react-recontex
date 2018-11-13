@@ -75,16 +75,7 @@ var actionNameToTypes = function (actionName) {
         .trim()
         .toUpperCase();
 };
-var printDebugInfo = function (currentAction, state, args, nextState) {
-    var params = {};
-    if (args) {
-        if (args.length === 1) {
-            params = args[0];
-        }
-        else if (args.length > 1) {
-            params = args;
-        }
-    }
+var printDebugInfo = function (currentAction, state, params, nextState) {
     console.log("---> ACTION: %c" + actionNameToTypes(currentAction), "color: #000000; " + loggerStyle);
     console.log("  %cprev state ", "color: #708090; " + loggerStyle, state);
     console.log("  %cparams     ", "color: #0000FF; " + loggerStyle, params);
@@ -101,28 +92,24 @@ function createStore(initialState, actionsCreators, logger) {
     var context = React.createContext(initialState);
     var provider;
     var state = initialState;
-    var setProvider = function (self) { return (provider = self); };
+    var setProvider = function (self) {
+        provider = self;
+    };
     var actions = Object.keys(actionsCreators).reduce(function (accumulator, currentAction) {
         var _a;
-        return (__assign({}, accumulator, (_a = {}, _a[actionNameToTypes(currentAction)] = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var update = actionsCreators[currentAction].apply(actionsCreators, [state].concat(args));
+        return (__assign({}, accumulator, (_a = {}, _a[actionNameToTypes(currentAction)] = function (params) {
+            if (params === void 0) { params = {}; }
+            var update = actionsCreators[currentAction](state, params);
             var nextState = __assign({}, state, update);
             if (logger) {
-                printDebugInfo(currentAction, state, args, nextState);
+                printDebugInfo(currentAction, state, params, nextState);
             }
             state = nextState;
             provider.setState(nextState);
         }, _a)));
     }, {});
-    var dispatch = function (actionType) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
+    var dispatch = function (actionType, params) {
+        if (params === void 0) { params = {}; }
         if (!actionType) {
             printWarning("Action Type is required!");
         }
@@ -130,14 +117,12 @@ function createStore(initialState, actionsCreators, logger) {
             printWarning("Ation with type " + actionType + " is not defined");
         }
         else {
-            actions[actionType].apply(actions, args);
+            actions[actionType](params);
         }
     };
-    var Provider = createProvider(setProvider, context.Provider, initialState);
-    var connect = createConnect(context.Consumer);
     return {
-        Provider: Provider,
-        connect: connect,
+        Provider: createProvider(setProvider, context.Provider, initialState),
+        connect: createConnect(context.Consumer),
         dispatch: dispatch
     };
 }

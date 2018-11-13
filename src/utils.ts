@@ -1,5 +1,4 @@
 const loggerStyle = "font-weight: bold";
-
 const actionNameToTypes = (actionName: string) => {
   return actionName
     .replace(/([A-Z])/g, "_$1")
@@ -10,17 +9,9 @@ const actionNameToTypes = (actionName: string) => {
 const printDebugInfo = (
   currentAction: string,
   state: object,
-  args: any[],
+  params: object,
   nextState: object
 ) => {
-  let params = {};
-  if (args) {
-    if (args.length === 1) {
-      params = args[0];
-    } else if (args.length > 1) {
-      params = args;
-    }
-  }
   console.log(
     `---> ACTION: %c${actionNameToTypes(currentAction)}`,
     `color: #000000; ${loggerStyle}`
