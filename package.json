@@ -1,9 +1,9 @@
 {
   "name": "react-recontext",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/index.js",
-  "types": "src/types.ts",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"No test specified\"",
     "format": "prettier --write \"src/**/*.tsx\" \"src/**/*.js\"",
