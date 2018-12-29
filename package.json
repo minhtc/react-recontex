@@ -1,9 +1,9 @@
 {
   "name": "react-recontext",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"No test specified\"",
     "format": "prettier --write \"src/**/*.tsx\" \"src/**/*.js\"",
@@ -40,16 +40,16 @@
     "react": "^16.6.0"
   },
   "devDependencies": {
-    "@types/react": "^16.7.3",
-    "prettier": "^1.15.2",
+    "@types/react": "^16.7.18",
+    "prettier": "^1.15.3",
     "rimraf": "^2.6.2",
-    "rollup": "^0.67.1",
+    "rollup": "^1.0.0",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-typescript2": "^0.18.0",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.16.0",
-    "typescript": "^3.1.6"
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-typescript2": "^0.18.1",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.2"
   },
   "dependencies": {}
 }
