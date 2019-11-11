@@ -1,9 +1,11 @@
 import React from "react";
 import Todo from "./Todo";
-import { connect, dispatch } from "../recontext/store";
+import { Context, dispatch } from "../recontext/store";
 
-const TodoList = ({ todos }) => (
-  <ul>
+function TodoList() {
+  const { todos } = React.useContext(Context)
+
+  return <ul>
     {todos.map(todo => (
       <Todo
         key={todo.id}
@@ -12,10 +14,6 @@ const TodoList = ({ todos }) => (
       />
     ))}
   </ul>
-);
+}
 
-const mapStateToProps = state => ({
-  todos: state.todos
-});
-
-export default connect(mapStateToProps)(TodoList);
+export default TodoList

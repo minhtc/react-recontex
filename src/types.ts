@@ -1,29 +1,21 @@
-export interface State {
+export interface ObjectWithKey {
   [key: string]: any;
 }
 
-export type MapStateToProps = (state: State) => State;
-
-type Connect = (
-  mapStateToProps: MapStateToProps
-) => (ComponentToWrap: React.ComponentType<any>) => React.ComponentType<any>;
-
-type Dispatch = (actionType: string, params?: State) => void;
-
-export interface Provider {
-  setState: (state: object) => void;
+export interface StoreState {
+  [key: string]: any;
 }
 
 export interface Actions {
-  [actionType: string]: (params: State) => void;
+  [actionType: string]: (state: StoreState, params?: any) => StoreState;
 }
 
-export interface ActionCreators {
-  [actionName: string]: (state: State, params: State) => State;
-}
+export type VoidFunction = () => void;
+
+export type ListenerFunction = (newStoreState: StoreState) => void;
 
 export interface Store {
-  Provider: React.ComponentType<any>;
-  dispatch: Dispatch;
-  connect: Connect;
+  getState: () => StoreState;
+  subscribe: (callback: ListenerFunction) => VoidFunction;
+  dispatch: (actionType: string, params?: any) => void;
 }

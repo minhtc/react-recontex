@@ -1,6 +1,6 @@
 import React from "react";
 
-const Todo = ({todo, onClick}) => (
+const Todo = ({ todo, onClick }) => (
   <li
     onClick={onClick}
     style={{

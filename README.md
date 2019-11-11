@@ -6,13 +6,7 @@ A lightweight state management inspired by Flux, Redux, based on the latest Reac
 
 SUPER simple and easy to build react, react-native application and flux architecture.
 
-Following the Flux Architechture but with only one root Store:
-
-<center>
-
-![Flux Simple Diagram](https://facebook.github.io/flux/img/flux-simple-f8-diagram-with-client-action-1300w.png "Flux Simple Diagram")
-
-</center>
+Following the Flux Architechture
 
 ## Installation
 
@@ -71,31 +65,25 @@ Only **3 steps** to start with react-recontext
 1.  Create **store.js**
 
 ```js
-import createStore from "react-recontext";
+import createContext from "react-recontext";
 
-// create app initial state
-const initialState = {
+const { dispatch, Context, Provider } = createContext({
+  displayName: "AppContext",
+  initState: {
     todos: []
-};
-
-// create app actions, all action type would be generated automatically
-const actionsCreators = {
-    toggleItem: (state, { todoId }) => ({
-        todos: state.todos.map(
-            todo =>
-                todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
-            )
+  },
+  actions: {
+    TOGGLE_ITEM: (state, { todoId }) => ({
+      todos: state.todos.map(todo =>
+        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+      )
     })
-};
-
-// enable logger for debugging
-const enableLogger = __DEV__
-
-// createStore required 3 params, and return a recontext store
-const store =  createStore(initialState, actionsCreators, enableLogger);
+  },
+  isEnableLog: __DEV__
+});
 
 // export store
-export store
+export { dispatch, Context, Provider };
 ```
 
 2.  Wrap root component with Provider
@@ -137,26 +125,25 @@ const App = () => (
 ```js
 import React from "react";
 import Todo from "./Todo";
-import { connect, dispatch } from "./store";
+import { Context, dispatch } from "./store";
 
-const TodoList = ({ todos }) => (
-  <ul>
-    {todos.map(todo => (
-      <Todo
-        key={todo.id}
-        todo={todo}
-        onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })} // dispatch action type to update store value
-      />
-    ))}
-  </ul>
-);
+const TodoList = () => {
+  const { todos } = React.useContext(Context);
 
-const mapStateToProps = state => ({
-  todos: state.todos
-});
+  return (
+    <ul>
+      {todos.map(todo => (
+        <Todo
+          key={todo.id}
+          todo={todo}
+          onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })} // dispatch action type to update store value
+        />
+      ))}
+    </ul>
+  );
+};
 
-// connect component to get value from store
-export default connect(mapStateToProps)(TodoList);
+export default TodoList;
 ```
 
 ## Debugging
