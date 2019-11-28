@@ -18,6 +18,8 @@ _or_
 
 ## Api
 
+_“Everything should be made as simple as possible, but no simpler.”_ - Einstein
+
 1. **`createStore(initialState, actionsCreators, enableLogger)`**: of course, to create the app's root Store! 😗
    - **initialState**: vanilla or immutable js object, contains store default value.
    - **actionsCreators**: js object contains function to update store value
@@ -30,25 +32,9 @@ _or_
    - **actionType**: a string corresponding to the action name in `actionsCreators`
    - **params**: should be an object contains the value you want to update in 
 
-### Important and _funny_ part:
-
-You don't need to create action types anymore, all action type would be generated automatically. For example:
-
-- the actions creators:
-
-        const actionsCreators = {
-            addTodoItem: (state, { item }) => ({
-                list: state.list.push(item)
-            })
-        };
-
-- change the action name from camel case into screaming snake case (`addTodoItem` => `ADD_TODO_ITEM`) then dispatch action.
-
-        dispatch("ADD_TODO_ITEM", { item: item })
-
 ## Example
 
-There are some examples app you can play with:
+There are some examples you can play with:
 
 - Web App Todos: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/webapp)
 - Web App Todos Preview on CodeSandbox: [Todo App Example](https://codesandbox.io/s/github/GantMan/ReactStateMuseum/tree/master/React/react-recontext)
@@ -67,7 +53,7 @@ Only **3 steps** to start with react-recontext
 ```js
 import createContext from "react-recontext";
 
-const { dispatch, Context, Provider } = createContext({
+export const { dispatch, Context, Provider } = createContext({
   displayName: "AppContext",
   initState: {
     todos: []
@@ -78,12 +64,8 @@ const { dispatch, Context, Provider } = createContext({
         todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
       )
     })
-  },
-  isEnableLog: __DEV__
+  }
 });
-
-// export store
-export { dispatch, Context, Provider };
 ```
 
 2.  Wrap root component with Provider
@@ -120,7 +102,7 @@ const App = () => (
 );
 ```
 
-3.  Connect component to get data and call action anywhere you want
+3. Get data from store and call action anywhere you want
 
 ```js
 import React from "react";

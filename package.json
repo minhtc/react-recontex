@@ -1,6 +1,6 @@
 {
   "name": "react-recontext",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,10 +43,10 @@
     "react": "^16.6.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.11",
+    "@types/react": "^16.9.13",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
-    "rollup": "^1.26.5",
+    "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.25.2",

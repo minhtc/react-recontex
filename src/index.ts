@@ -27,7 +27,7 @@ export default function createContext<
   return {
     Context,
     Provider: createProvider(store, Context.Provider),
-    dispatch: store.dispatch,
-    actions: store.actions
+    actions: store.actions,
+    dispatch: store.dispatch
   };
 }

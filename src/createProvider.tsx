@@ -1,9 +1,5 @@
 import * as React from "react";
 
-interface Props {
-  children: React.ReactNode;
-}
-
 function createProvider<StoreState>(
   store: {
     getState: () => StoreState;
@@ -11,7 +7,7 @@ function createProvider<StoreState>(
   },
   Provider: React.Provider<StoreState>
 ) {
-  return class WrappedComponent extends React.Component<Props> {
+  return class WrappedComponent extends React.Component {
     isComMounted: boolean = false;
     unsubscribe: any;
 
