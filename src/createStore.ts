@@ -1,11 +1,13 @@
-import { Actions, ListenerFunction, Store, StoreState } from "./types";
+
 import { printNextState, printPrevState, printWarning } from "./utils";
 
-export default function createStore(
-  initialState: StoreState,
-  actions: Actions,
-  isEnableLog?: boolean
-): Store {
+export default function createStore<
+  StoreState,
+  Actions extends Record<string, ActionMethods>,
+  ActionMethods extends (state: StoreState, params?: any) => StoreState
+>(initialState: StoreState, actions: Actions, isEnableLog?: boolean) {
+  type ListenerFunction = (newStoreState: StoreState) => void;
+
   let currentState: StoreState = initialState;
   const listeners: ListenerFunction[] = [];
 
@@ -24,7 +26,10 @@ export default function createStore(
       };
     },
 
-    dispatch(actionType: string, params?: any) {
+    dispatch<T extends keyof typeof actions>(
+      actionType: T,
+      params: Parameters<typeof actions[T]>[1] extends undefined ? void : Parameters<typeof actions[T]>[1]
+    ) {
       // check if action type is exists
       if (!actionType) {
         if (isEnableLog) {
@@ -58,6 +63,11 @@ export default function createStore(
       for (const listener of listeners) {
         listener(currentState);
       }
+    },
+
+    actions<T extends keyof typeof actions>(actionType: T) {
+      type paramsType = Parameters<typeof actions[T]>[1];
+      return (params: paramsType extends undefined ? void : paramsType) => this.dispatch(actionType, params);
     }
   };
 }
