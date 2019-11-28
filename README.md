@@ -36,11 +36,9 @@ _“Everything should be made as simple as possible, but no simpler.”_ - Einst
 
 There are some examples you can play with:
 
-- Web App Todos: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/webapp)
-- Web App Todos Preview on CodeSandbox: [Todo App Example](https://codesandbox.io/s/github/GantMan/ReactStateMuseum/tree/master/React/react-recontext)
+- Todo Example React Web: [![Edit react-recontext-todo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/weathered-dew-dr4x6?fontsize=14&hidenavigation=1&theme=dark)
+- Todo Example React Native: [Todo App Example](https://snack.expo.io/@minhtc/react-recontext-demo)
 - Web App Hackathon Team Matcher: [Hackathon team matcher](https://junctionxhanoi.meohack.com)
-- React Native App Todos: [Todo App Example](https://github.com/minhtc/react-recontext/tree/master/examples/nativeapp)
-- React Native Todos Preview on Expo: [Todo App Example](https://snack.expo.io/@minhtc/react-recontext-demo)
 - React Native Audiobook: [Audiobook React Native App](https://github.com/minhtc/sachnoiapp)
 - ...more is coming...
 
