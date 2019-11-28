@@ -20,17 +20,21 @@ _or_
 
 _“Everything should be made as simple as possible, but no simpler.”_ - Einstein
 
-1. **`createStore(initialState, actionsCreators, enableLogger)`**: of course, to create the app's root Store! 😗
-   - **initialState**: vanilla or immutable js object, contains store default value.
-   - **actionsCreators**: js object contains function to update store value
-   - **enableLogger**: boolean flag for debugging
-2. **`<Provider />`**: wrap the root Component.
-   - The root component usually is `<App />` Component
-3. **`connect(mapStateToProps)(Component)`**: connect React Component to Store, very easy to get value from store in any components.
-   - **mapStateToProps**: a function to define which store values you want to inject into Component props
-4. **`dispatch(actionType, params)`**: dispatch an event to update the Store value, from everywhere.
-   - **actionType**: a string corresponding to the action name in `actionsCreators`
-   - **params**: should be an object contains the value you want to update in 
+```js
+const { Provider, Context, dispatch } = createStore(
+  initialState,
+  actionsCreators,
+  enableLogger
+);
+```
+
+- **initialState**: vanilla or immutable js object, contains store default value.
+- **actionsCreators**: js object contains function to update store value
+- **enableLogger**: boolean flag to enable logging for debug
+- **`<Provider />`**: wrap the root Component. The root component usually is `<App />` Component
+- **`dispatch(actionType, params)`**: dispatch an event to update the Store value, from everywhere.
+  - **actionType**: a string corresponding to the action name in `actionsCreators`
+  - **params**: should be an object contains the changes you want to update in store
 
 ## Example
 
@@ -100,7 +104,7 @@ const App = () => (
 );
 ```
 
-3. Get data from store and call action anywhere you want
+3. Get data from store inside component by using React.useContext, and dispatch an action from anywhere you want
 
 ```js
 import React from "react";
@@ -116,7 +120,7 @@ const TodoList = () => {
         <Todo
           key={todo.id}
           todo={todo}
-          onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })} // dispatch action type to update store value
+          onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })}
         />
       ))}
     </ul>
