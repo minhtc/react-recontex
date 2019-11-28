@@ -2,7 +2,7 @@ import { StoreState } from "./types";
 
 const loggerStyle = "font-weight: bold";
 
-function printPrevState(actionType: string, state: StoreState) {
+function printPrevState(actionType: string | number | Symbol, state: StoreState) {
   console.log(`---> ACTION: %c${actionType}`, `color: #000000; ${loggerStyle}`);
   console.log("  %cprev state ", `color: #708090; ${loggerStyle}`, state);
 }

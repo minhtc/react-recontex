@@ -1,11 +1,16 @@
 import * as React from "react";
-import { Store, StoreState } from "./types";
 
 interface Props {
   children: React.ReactNode;
 }
 
-function createProvider(store: Store, Provider: React.Provider<any>) {
+function createProvider<StoreState>(
+  store: {
+    getState: () => StoreState;
+    subscribe: (callback: (newStoreState: StoreState) => void) => () => void;
+  },
+  Provider: React.Provider<StoreState>
+) {
   return class WrappedComponent extends React.Component<Props> {
     isComMounted: boolean = false;
     unsubscribe: any;
